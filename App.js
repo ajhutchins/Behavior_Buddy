@@ -1,8 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import React, { Component, useState } from 'react';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  Button, 
+  TextInput, 
+  FlatList, 
+  TouchableOpacity, 
+  SafeAreaView, 
+  ActivityIndicator 
+} from 'react-native';
 
 export default function App() {
+
+  // constructor(){
+  //   super()
+  //     this.state={
+  //       isLoading: true
+  //     }
+  // }
+
+
   const [indexCards, setCards] = useState([
     { title: 'Applied Behavior Analysis (ABA)', key: '1' },
     { title: 'Adjunctive Behavior', key: '2' },
@@ -39,6 +58,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <SafeAreaView/>
       <Text style={styles.header}>BehaviorBuddies</Text>
 
       <Text style={styles.searchText}>What should we learn about today?</Text>
@@ -82,7 +102,7 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: 'bold',
     fontSize: 34,
-    marginTop: 50,
+    marginTop: 350,
   },
   indexCards: {
     borderRadius: 2,
