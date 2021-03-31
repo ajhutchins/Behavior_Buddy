@@ -1,5 +1,9 @@
 # Behavior_Buddies
 
+### Wireframe
+
+[Behavior_Buddy Wireframe](https://github.com/ajhutchins/Behavior_Buddy/blob/main/Scanned%20Documents.pdf)
+
 ### User Stories
 
 #### MVP
@@ -12,6 +16,8 @@
 
 #### STRETCH GOALS
 
-1. Add 100+ terms to the app, so it might actually be useful out of the gate (nothing really like this exists, so I would really like to focus on expanding on the information of each index card to really try and make it useful for the user.
-2. Add a 'Get Help Near Me' button that provides a googlemap of professionals within a certain radius.
-3. Add other buttons to donate to Autism Speaks and Special Olympics.
+1. User Authentication feature so user can have a profile and save favorite terms.
+2. Create a way for admin users to add new terms (desktop version (CMS-like)).
+4. Add 100+ terms to the app, so it might actually be useful out of the gate (nothing really like this exists, so I would really like to focus on expanding on the information of each index card to really try and make it useful for the user.
+5. Add a 'Get Help Near Me' button that provides a googlemap of professionals within a certain radius.
+6. Add other buttons to donate to Autism Speaks and Special Olympics.
