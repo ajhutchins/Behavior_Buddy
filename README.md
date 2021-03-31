@@ -2,7 +2,7 @@
 
 ### Wireframe
 
-[Behavior_Buddy Wireframe](https://www.google.com)
+[Behavior_Buddy Wireframe](https://github.com/ajhutchins/Behavior_Buddy/blob/main/Scanned%20Documents.pdf)
 
 ### User Stories
 
