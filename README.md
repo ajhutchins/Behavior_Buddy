@@ -1,5 +1,9 @@
 # Behavior_Buddies
 
+### Wireframe
+
+[Behavior_Buddy Wireframe](https://www.google.com)
+
 ### User Stories
 
 #### MVP
