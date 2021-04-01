@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   StatusBar
 } from 'react-native';
-// import { ListItem } from 'react-native-elements'
+import { SearchBar } from 'react-native-elements'
 import axios from 'axios';
 // import behaviors from '../Behavior_Buddy_API/controllers/behaviors'
 
@@ -39,10 +39,10 @@ const behaviorsURL = 'http://localhost:3003/behaviors/'
 class App extends Component {
 
   state = {
+    search: '',
     behaviors: [],
+    filteredBehaviors: [],
   }
-
-
 
 
   // constructor(props) {
@@ -57,10 +57,9 @@ class App extends Component {
   //   this.getBehaviors = this.getBehaviors.bind(this)
   // }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.getBehaviors();
   }
-
 
   getBehaviors() {
     axios.get(behaviorsURL).then(res => {
@@ -71,24 +70,24 @@ class App extends Component {
     });
   }
 
-
-
   renderItemComponent = (itemData) =>
     <TouchableOpacity>
       <Text source={{}}></Text>
     </TouchableOpacity>
 
-  // clickHandler = () => {
-  //   // search through behaviors
-  // }
 
-  // pressHandler = (key) => {
-  //   console.log(key)
-  // }
+  updateSearch = (search) => {
+    this.setState({ search })
+  }
 
 
   render() {
+
+    const { search } = this.state;
+
     return (
+
+
       <View style={styles.container}>
 
         <SafeAreaView />
@@ -101,8 +100,10 @@ class App extends Component {
           data={this.state.behaviors}
           style={styles.input}
           placeholder='enter keyword(s)'
-        // onChangeText={(val) => searchIndexCards(val)}
         />
+
+
+        <Text style={styles.searchText}>(Results will filter below as you type!)</Text>
 
         <View style={styles.loadingBar}>
           {this.state.isLoading ?
@@ -117,56 +118,27 @@ class App extends Component {
         </View>
 
 
-        <View>
-          {this.state.behaviors.map(data => (
-            <Text key={data.id} style={styles.indexCards}>
-              {' ------------------------------ '}
+
+
+        <FlatList
+          data={this.state.behaviors}
+          keyExtractor={(id, index) => index.toString()}
+          renderItem={({ item }) => (
+            <Text style={styles.indexCards}>
+              {item.title}
               <br />
-              <Text style={styles.title}>{data.title}
-              </Text>
+              {'Definition: '}
+              {item.definition}
               <br />
-              {data.definition}
+              {'Methods: '}
+              {item.methods}
               <br />
-              {data.methods}
-              <br />
-              {data.resources}
-              <br />
-              {' ------------------------------ '}
+              {'Resources: '}
+              {item.resources}
+
             </Text>
-          ))}
-        </View>
-
-
-        {/* <SafeAreaView style={styles.container2}>
-          <FlatList
-            data={this.state.behaviors}
-            renderItem={renderItem}
-            keyExtractor={data => data.id}
-          />
-        </SafeAreaView> */}
-
-        {/* <View> */}
-
-        {/* <FlatList
-          data={this.state.behaviors.map(data =>)}
-          keyExtractor={(item, index) => index.toString}
-          renderItem={({ item }) => {
-            return ( */}
-        {/* // <ListItem */}
-        {/* //   title={`${item.title}`}
-              //   onPress={() => { }}
-              // />
-            // )
-          // }}
-        // ListEmptyComponent={() => ( */}
-        {/* //   <View style={{ marginTop: 50 }}>
-        //   <Text style={styles.listText}>No result(s) found...</Text>
-        //   </View>
-        // )}
-        // /> */}
-
-        {/* // </View> */}
-
+          )}
+        />
 
 
 
@@ -210,6 +182,8 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 20,
     fontStyle: 'italic',
+    maxWidth: 375,
+    textAlign: 'center',
   },
   input: {
     borderRadius: 2,
