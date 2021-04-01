@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-// const cors = require('cors')
+const cors = require('cors')
 
 const behaviorsController = require('./controllers/behaviors')
 
@@ -25,7 +25,7 @@ const whitelist = ['http://localhost:3000', 'http://localhost:3003']
 //     }
 // }
 
-// APP.use(cors(corsOptions))
+APP.use(cors())
 
 APP.use(express.json())
 
