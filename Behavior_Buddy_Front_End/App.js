@@ -1,95 +1,110 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { Component, useState } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Button, 
-  TextInput, 
-  FlatList, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  ActivityIndicator 
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  Button,
+  ListItem,
+  TouchableOpacity
 } from 'react-native';
+// import behaviors from '../Behavior_Buddy_API/controllers/behaviors'
 
-export default function App() {
+// let behaviorArray = require('../Behavior_Buddy_API/controllers/behaviors')
 
-  // constructor(){
-  //   super()
-  //     this.state={
-  //       isLoading: true
-  //     }
-  // }
+let baseURL = ''
 
-
-  const [indexCards, setCards] = useState([
-    { title: 'Applied Behavior Analysis (ABA)', key: '1' },
-    { title: 'Adjunctive Behavior', key: '2' },
-    { title: 'Aversion Therapy', key: '3' },
-    { title: 'Aversive Stimulus', key: '4' },
-    { title: 'Backward Chaining', key: '5' },
-    { title: 'Baseline', key: '6' },
-    { title: 'Behavrioal Repertoire', key: '7' },
-    { title: 'Changing Criterion', key: '8' },
-    { title: 'Classical Conditioning', key: '9' },
-    { title: 'Compund Stimulus', key: '10' },
-    { title: 'Concurrent Behavioral Contingency', key: '11' },
-    { title: 'Conditioned Response', key: '12' },
-    { title: 'Conditioned Reinforcer(s)', key: '13' },
-    { title: 'Contingency-Shaped Behavior', key: '14' },
-    { title: 'Continuous Reinforcement', key: '15' },
-    { title: 'Dependent Variable', key: '16' },
-    { title: 'Deprivation', key: '17' },
-    { title: 'Discrete Trial Training', key: '18' },
-    { title: 'Discrimination', key: '19' },
-    { title: 'Displacement', key: '20' },
-    { title: 'Echolalia', key: '21' },
-  ])
+if(process.env.NODE_ENV === 'development'){
+  baseURL = 'http://localhost:3003'
+} else {
+  baseURL = 'your heroku backend url here, bub'
+}
 
 
-  const clickHandler = () => {
-    // search through indexCards
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      behaviors: [],
+    };
+    this.getBehaviors = this.getBehaviors.bind(this)
   }
 
-  const pressHandler = (key) => {
+  async componentDidMount() {
+    this.getBehaviors();
+  }
+
+
+  getBehaviors() {
+    fetch(baseURL + '/behaviors')
+      .then(data => { return data.json() }, err => console.log(err))
+      .then(parsedData => this.setState({ behaviors: parsedData }), err => console.log(err))
+  }
+
+  renderItemComponent = (itemData) =>
+    <TouchableOpacity>
+      <Text source={{}}></Text>
+    </TouchableOpacity>
+
+  clickHandler = () => {
+    // search through behaviors
+  }
+
+  pressHandler = (key) => {
     console.log(key)
   }
 
 
-  return (
-    <View style={styles.container}>
-      <SafeAreaView/>
-      <Text style={styles.header}>BehaviorBuddies</Text>
+  render () {
+    return (
+      <View style={styles.container}>
+        <SafeAreaView/>
+        <Text style={styles.header}>BehaviorBuddy</Text>
 
-      <Text style={styles.searchText}>What should we learn about today?</Text>
-      <TextInput 
-        style={styles.input}
-        placeholder='enter keyword(s)'
-        // onChangeText={(val) => searchIndexCards(val)}
-        />
+        <Text style={styles.searchText}>What should we learn about today?</Text>
 
-      <View style={styles.buttonContainer}>
-          <Button title='SEARCH' onPress={clickHandler}/>
+        <TextInput 
+          data={this.state.data}
+          style={styles.input}
+          placeholder='enter keyword(s)'
+          // onChangeText={(val) => searchIndexCards(val)}
+          />
+
+        <View style={styles.loadingBar}>
+          {this.state.isLoading?
+            <View style={{ 
+              ...StyleSheet.absolutelFill, 
+              alignItems: 'center', 
+              justifyContent: 'center'
+              }}>
+              <ActivityIndicator size='large' color='black' />
+            </View>
+          : null }
+        </View>
+
+        <View>
+
+          <FlatList
+            data={this.state.behaviors}
+            renderItem={ this.renderItem }
+            ListEmptyComponent={() => (
+              <View style={{ marginTop: 50 }}>
+              <Text style={styles.listText}>No result(s) found...</Text>
+              </View>
+            )}
+          />
+
+        </View>
+
+        {/* <StatusBar style="auto" /> */}
       </View>
-
-      <View>
-
-        <FlatList
-          data={indexCards}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => pressHandler(item.key)}>
-              <Text style={styles.indexCards}>{item.title}</Text>
-            </TouchableOpacity>
-          )}
-        />
-
-      </View>
-
-      <StatusBar style="auto" />
-    </View>
-  );
+    );
+  }
 }
-
 
 
 const styles = StyleSheet.create({
@@ -130,5 +145,15 @@ const styles = StyleSheet.create({
     height: 34,
     width: 200,
     paddingLeft: 8,
+  },
+  loadingBar: {
+    flex: 1,
+    padding: 25,
+  },
+  listText: {
+    color: 'black'
   }
 });
+
+
+export default App;
