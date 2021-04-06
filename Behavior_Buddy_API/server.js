@@ -8,6 +8,7 @@ const APP = express()
 const PORT = 3003
 const DBNAME = 'behavior_buddy'
 
+
 mongoose.connect(`mongodb://localhost:27017/${DBNAME}`, { useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('connected to mongoose...')

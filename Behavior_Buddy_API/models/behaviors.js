@@ -7,4 +7,6 @@ const behaviorSchema = mongoose.Schema({
     resources: {type: String, required: true},
 })
 
+behaviorSchema.index({ title: 'text' })
+
 module.exports = mongoose.model('Behavior', behaviorSchema)

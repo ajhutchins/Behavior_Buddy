@@ -68,7 +68,7 @@ BEHAVIORS.get('/seed', (req, res) => {
           key: 9
       },
       {
-          title: 'Compund Stimulus',
+          title: 'Compound Stimulus',
           definition: 'A stimulus comprising two or more simple stimuli that occur at the same time.',
           methods: '',
           resources: '[Enter resources here]',
@@ -168,5 +168,35 @@ BEHAVIORS.get('/', (req, res) => {
     res.status(200).json(allBehaviors)
   })
 })
+
+// curl 'http://localhost:3003/behavior_buddy'
+BEHAVIORS.get('/find/:query', (req, res) => {
+  var query = req.params.query;
+  console.log(query)
+  // console.log(Behavior.find({'title': 'Classical'}))
+  Behavior.find({
+    $text: {
+      $search: query
+    }
+  }, function(err, result){
+    console.log(result)
+    if (err) throw err;
+    if (result) {
+      console.log(result)
+      res.json(result)
+    } else {
+    res.send(JSON.stringify({
+      error: 'Error'
+    }))
+  }})
+})
+
+
+// app.get('/pokedex/:indexOfPokemon', (req, res) => {
+//   res.render('show.ejs', {
+//       data: Pokemon[req.params.indexOfPokemon]
+//   });
+// });
+
 
 module.exports = BEHAVIORS

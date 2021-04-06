@@ -39,9 +39,9 @@ const behaviorsURL = 'http://localhost:3003/behaviors/'
 class App extends Component {
 
   state = {
-    search: '',
+    loading: false,
     behaviors: [],
-    filteredBehaviors: [],
+    error: null,
   }
 
 
@@ -57,12 +57,17 @@ class App extends Component {
   //   this.getBehaviors = this.getBehaviors.bind(this)
   // }
 
+
+
   componentDidMount() {
     this.getBehaviors();
   }
 
   getBehaviors() {
+    this.setState({ loading: true })
+
     axios.get(behaviorsURL).then(res => {
+      console.log(res.data)
       this.setState({ behaviors: res.data })
     }).catch((error) => {
       console.log("Api call error");
@@ -76,9 +81,16 @@ class App extends Component {
     </TouchableOpacity>
 
 
-  updateSearch = (search) => {
-    this.setState({ search })
-  }
+  search = (searchText) => {
+    this.setState({ searchText: searchText });
+
+    let filteredData = this.state.data.filter(function (item) {
+      return item.title.includes(searchText);
+    });
+
+    this.setState({ filteredData: filteredData });
+  };
+
 
 
   render() {
@@ -96,10 +108,22 @@ class App extends Component {
 
         <Text style={styles.searchText}>The App that puts the ABA world into your pocket! What should we learn about today?</Text>
 
-        <TextInput
+        {/* <TextInput
           data={this.state.behaviors}
           style={styles.input}
           placeholder='enter keyword(s)'
+          onChange={this.searchChanged}
+          value={this.state.search}
+        /> */}
+
+        <SearchBar
+          round={true}
+          lightTheme={true}
+          placeholder='enter keyword(s)'
+          autoCapitalize='none'
+          autoCorrect={false}
+          onChangeText={this.search}
+          value={this.state.searchText}
         />
 
 
@@ -121,19 +145,32 @@ class App extends Component {
 
 
         <FlatList
-          data={this.state.behaviors}
-          keyExtractor={(id, index) => index.toString()}
+          // data={this.state.behaviors}
+          data={this.state.behaviors && this.state.behaviors.length > 0 ? this.state.behaviors : this.state.data}
+          keyExtractor={(item) => `item-${item.title}`}
+          // keyExtractor={(id, index) => index.toString()}
           renderItem={({ item }) => (
             <Text style={styles.indexCards}>
-              {item.title}
+              <Text style={styles.title}>
+                {item.title}
+              </Text>
               <br />
-              {'Definition: '}
+              <Text style={styles.words}>
+                {'Definition:'}
+              </Text>
+              {' '}
               {item.definition}
               <br />
-              {'Methods: '}
+              <Text style={styles.words}>
+                {'Methods:'}
+              </Text>
+              {' '}
               {item.methods}
               <br />
-              {'Resources: '}
+              <Text style={styles.words}>
+                {'Resources:'}
+              </Text>
+              {' '}
               {item.resources}
 
             </Text>
@@ -204,6 +241,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  words: {
+    textDecorationLine: 'underline',
   }
 });
 
