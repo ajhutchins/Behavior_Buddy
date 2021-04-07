@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
+  ScrollView,
   ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Button
 } from 'react-native';
-import { SearchBar } from 'react-native-elements'
+import SearchInput, { createFilter } from 'react-native-elements'
 import axios from 'axios';
 // import behaviors from '../Behavior_Buddy_API/controllers/behaviors'
 
@@ -33,6 +35,10 @@ if (process.env.NODE_ENV === 'development') {
 const behaviorsURL = 'http://localhost:3003/behaviors/'
 const behaviorsFind = 'http://localhost:3003/behaviors/find/'
 
+const KEYS_TO_FILTERS = ['title', 'definition'];
+// const shouldShow = useState(true)
+// const SetShouldShow = useState(true)
+
 class App extends Component {
 
   state = {
@@ -41,6 +47,8 @@ class App extends Component {
     loading: false,
     message: '',
     behaviors: [],
+    searchTerm: '',
+    isHidden: false,
   }
 
 
@@ -67,6 +75,10 @@ class App extends Component {
     });
   }
 
+
+
+
+
   renderItemComponent = (itemData) =>
     <TouchableOpacity>
       <Text source={{}}></Text>
@@ -79,9 +91,9 @@ class App extends Component {
       this.setState({ query, results: {}, message: '' })
     } else {
       this.setState({ query, loading: true, message: '' },
-      () => {
-        this.getSearchResults(1, query);
-      })
+        () => {
+          this.getSearchResults(1, query);
+        })
     }
   }
 
@@ -101,9 +113,9 @@ class App extends Component {
       .then((res) => {
         const resultNotFoundMsg = !res.data.length ? 'There are no matching search results. Please try again.' : '';
         this.setState({
-          results: res.data.map(function(item, i){
-            return(
-              item.title
+          results: res.data.map(function (item, i) {
+            return (
+              item
             )
           }),
           message: resultNotFoundMsg,
@@ -119,7 +131,28 @@ class App extends Component {
       })
   }
 
+  renderSearchReults = () => {
+    const { results } = this.state;
 
+    if (Object.keys(results).length && results.length) {
+      return (
+        <View>
+          {results.map((result) => {
+            return (
+              <View style={styles.results} key={result.id}>{result.title} | {result.definition}</View>
+            )
+          })}
+        </View>
+      )
+    }
+  }
+
+  onPress() {
+    this.setState({ isHidden: !this.state.isHidden })
+  }
+
+  // const { query } = this.state;
+  // [shouldShow, setShouldShow] = useState(true);
 
   render() {
 
@@ -143,24 +176,17 @@ class App extends Component {
           placeholder='enter keyword(s)'
           onChange={this.handleOnInputChange}
         />
+
+        <Text style={styles.searchText}>Results will appear below:</Text>
+
         <Text>
-          {this.state.query}
+          {this.renderSearchReults()}
         </Text>
 
-        {/* <SearchBar
-          round={true}
-          lightTheme={true}
-          placeholder='enter keyword(s)'
-          autoCapitalize='none'
-          autoCorrect={false} */}
-        {/* // onChange={this.searchChanged}
-          // value={this.state.search}
-        // /> */}
+        <Text style={styles.searchText}>-----------Search results will appear above-----------</Text>
+        <Text style={styles.searchText}>-------OR scroll through our full database below-------</Text>
 
-
-        <Text style={styles.searchText}>(Results will filter below as you type!)</Text>
-
-
+        <Text style={styles.header1}>Full BehaviorBuddy Database:</Text>
 
         <FlatList
           // data={this.state.behaviors}
@@ -196,7 +222,7 @@ class App extends Component {
         />
 
         <StatusBar style="auto" />
-      </View>
+      </View >
     );
   }
 }
@@ -260,6 +286,26 @@ const styles = StyleSheet.create({
   },
   words: {
     textDecorationLine: 'underline',
+  },
+  results: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 2,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderStyle: ('solid'),
+    padding: 40,
+    margin: 16,
+    textAlign: 'center',
+    // listStyleType: 'none',
+    width: 300,
+  },
+  header1: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginTop: 20,
+    marginBottom: 10,
   }
 });
 
