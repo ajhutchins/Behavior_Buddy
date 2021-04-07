@@ -139,7 +139,29 @@ class App extends Component {
         <View>
           {results.map((result) => {
             return (
-              <View style={styles.results} key={result.id}>{result.title} | {result.definition}</View>
+              <View style={styles.results} key={result.id}>
+                <Text style={styles.title}>
+                  {result.title}
+                </Text>
+                <br />
+                <Text style={styles.words}>
+                  {'Definition:'}
+                </Text>
+                {' '}
+                {result.definition}
+                <br />
+                <Text style={styles.words}>
+                  {'Methods:'}
+                </Text>
+                {' '}
+                {result.methods}
+                <br />
+                <Text style={styles.words}>
+                  {'Resources:'}
+                </Text>
+                {' '}
+                {result.resources}
+              </View>
             )
           })}
         </View>
@@ -234,11 +256,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'San Francisco',
   },
   header: {
     fontWeight: 'bold',
     fontSize: 36,
-    marginTop: 350,
+    marginTop: 100,
   },
   indexCards: {
     borderRadius: 2,
