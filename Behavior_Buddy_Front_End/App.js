@@ -18,54 +18,46 @@ import axios from 'axios';
 
 let baseURL = ''
 
+let cancel = ''
+
 if (process.env.NODE_ENV === 'development') {
   baseURL = 'http://localhost:3003'
 } else {
   baseURL = 'your heroku backend url here, bub'
 }
 
+// const returnObjectData = this.props.data.map(function(data, idx) {
+//   return <Text key={idx}>{data.title}</Text>
+// })
+
 const behaviorsURL = 'http://localhost:3003/behaviors/'
-
-// const item = ({ title }) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// )
-// const renderItem = ({ data }) => (
-//   <Item title={data.title} />
-// )
-
+const behaviorsFind = 'http://localhost:3003/behaviors/find/'
 
 class App extends Component {
 
   state = {
+    query: '',
+    results: {},
     loading: false,
+    message: '',
     behaviors: [],
-    error: null,
   }
 
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     searchBehaviors: '',
-  //     behaviorsURL: 'http://localhost:3003/behaviors/',
-  //     isLoading: false,
-  //     behaviors: [],
-  //     baseURL: 'http://localhost:3003/'
-  //   };
-  //   this.getBehaviors = this.getBehaviors.bind(this)
+  // async componentDidMount() {
+  //   const { data: behaviors } = await axios.get(
+  //       behaviorsURL
+  //   );
+  //   this.setState({ behaviors });
   // }
-
 
 
   componentDidMount() {
     this.getBehaviors();
   }
 
-  getBehaviors() {
-    this.setState({ loading: true })
 
+  getBehaviors = () => {
     axios.get(behaviorsURL).then(res => {
       console.log(res.data)
       this.setState({ behaviors: res.data })
@@ -81,21 +73,55 @@ class App extends Component {
     </TouchableOpacity>
 
 
-  search = (searchText) => {
-    this.setState({ searchText: searchText });
+  handleOnInputChange = (event) => {
+    const query = event.target.value;
+    if (!query) {
+      this.setState({ query, results: {}, message: '' })
+    } else {
+      this.setState({ query, loading: true, message: '' },
+      () => {
+        this.getSearchResults(1, query);
+      })
+    }
+  }
 
-    let filteredData = this.state.data.filter(function (item) {
-      return item.title.includes(searchText);
-    });
+  getSearchResults = (updatedPageNo = '', query) => {
+    const pageNumber = updatedPageNo ? `${updatedPageNo}` : '';
+    const searchURL = `${behaviorsFind}${query}`;
 
-    this.setState({ filteredData: filteredData });
-  };
+    if (this.cancel) {
+      this.cancel.cancel();
+    }
+    this.cancel = axios.CancelToken.source();
+
+    axios
+      .get(searchURL, {
+        cancelToken: this.cancel.token,
+      })
+      .then((res) => {
+        const resultNotFoundMsg = !res.data.length ? 'There are no matching search results. Please try again.' : '';
+        this.setState({
+          results: res.data.map(function(item, i){
+            return(
+              item.title
+            )
+          }),
+          message: resultNotFoundMsg,
+          loading: false,
+        })
+      }).catch((error) => {
+        if (axios.isCancel(error) || error) {
+          this.setState({
+            loading: false,
+            message: 'Failed to fetch results. Please check network.'
+          })
+        }
+      })
+  }
 
 
 
   render() {
-
-    const { search } = this.state;
 
     return (
 
@@ -108,39 +134,31 @@ class App extends Component {
 
         <Text style={styles.searchText}>The App that puts the ABA world into your pocket! What should we learn about today?</Text>
 
-        {/* <TextInput
-          data={this.state.behaviors}
+        <TextInput
+          // data={this.state.behaviors}
           style={styles.input}
+          type='text'
+          value={this.state.query}
+          id='search-input'
           placeholder='enter keyword(s)'
-          onChange={this.searchChanged}
-          value={this.state.search}
-        /> */}
+          onChange={this.handleOnInputChange}
+        />
+        <Text>
+          {this.state.query}
+        </Text>
 
-        <SearchBar
+        {/* <SearchBar
           round={true}
           lightTheme={true}
           placeholder='enter keyword(s)'
           autoCapitalize='none'
-          autoCorrect={false}
-          onChangeText={this.search}
-          value={this.state.searchText}
-        />
+          autoCorrect={false} */}
+        {/* // onChange={this.searchChanged}
+          // value={this.state.search}
+        // /> */}
 
 
         <Text style={styles.searchText}>(Results will filter below as you type!)</Text>
-
-        <View style={styles.loadingBar}>
-          {this.state.isLoading ?
-            <View style={{
-              ...StyleSheet.absolutelFill,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <ActivityIndicator size='large' color='black' />
-            </View>
-            : null}
-        </View>
-
 
 
 
@@ -176,8 +194,6 @@ class App extends Component {
             </Text>
           )}
         />
-
-
 
         <StatusBar style="auto" />
       </View>
