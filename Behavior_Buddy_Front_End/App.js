@@ -3,7 +3,7 @@ import {
   View,
   Text,
   FlatList,
-  ScrollView,
+  Platform,
   ActivityIndicator,
   SafeAreaView,
   StyleSheet,
@@ -49,6 +49,7 @@ class App extends Component {
     behaviors: [],
     searchTerm: '',
     isHidden: false,
+    content: true,
   }
 
 
@@ -76,13 +77,9 @@ class App extends Component {
   }
 
 
-
-
-
-  renderItemComponent = (itemData) =>
-    <TouchableOpacity>
-      <Text source={{}}></Text>
-    </TouchableOpacity>
+  hideAndShow = () => {
+    this.setState(previousState => ({ content: !previousState.content }))
+  }
 
 
   handleOnInputChange = (event) => {
@@ -213,30 +210,50 @@ class App extends Component {
           keyExtractor={(item) => `item-${item.title}`}
           // keyExtractor={(id, index) => index.toString()}
           renderItem={({ item }) => (
-            <Text onPress={(event) => console.log(event._dispatchInstances.memoizedProps.children)} style={styles.indexCards}>
+            <Text style={styles.indexCards}>
               <Text style={styles.title}>
                 {item.title}
               </Text>
               <br />
-              <Text style={styles.words}>
-                {'Definition:'}
-              </Text>
-              {' '}
-              {item.definition}
-              <br />
-              <Text style={styles.words}>
-                {'Methods:'}
-              </Text>
-              {' '}
-              {item.methods}
-              <br />
-              <Text style={styles.words}>
-                {'Resources:'}
-              </Text>
-              {' '}
-              {item.resources}
+              { this.state.content ?
+                <Text>
+                  <Text style={styles.words}>
+                    {'Definition:'}
+                  </Text>
 
+                  <Text>
+                    {' '}
+                    {item.definition}
+                    <br />
+                  </Text>
+
+                  <Text style={styles.words}>
+                    {'Methods:'}
+                  </Text>
+
+                  <Text>
+                    {' '}
+                    {item.methods}
+                    <br />
+                  </Text>
+
+                  <Text style={styles.words}>
+                    {'Resources:'}
+                  </Text>
+
+                  <Text>
+                    {' '}
+                    {item.resources}
+                    <br />
+                  </Text>
+
+
+                </Text>
+                : null}
+              <br />
+              <Button title='Hide Info' onPress={this.hideAndShow} />
             </Text>
+
           )}
         />
 
