@@ -169,9 +169,6 @@ class App extends Component {
     }
   }
 
-  onPress() {
-    this.setState({ isHidden: !this.state.isHidden })
-  }
 
   // const { query } = this.state;
   // [shouldShow, setShouldShow] = useState(true);
@@ -199,7 +196,7 @@ class App extends Component {
           onChange={this.handleOnInputChange}
         />
 
-        <Text style={styles.searchText}>Results will appear below:</Text>
+        <Text style={styles.searchText}>Search results will appear below:</Text>
 
         <Text>
           {this.renderSearchReults()}
@@ -216,7 +213,7 @@ class App extends Component {
           keyExtractor={(item) => `item-${item.title}`}
           // keyExtractor={(id, index) => index.toString()}
           renderItem={({ item }) => (
-            <Text style={styles.indexCards}>
+            <Text onPress={(event) => console.log(event._dispatchInstances.memoizedProps.children)} style={styles.indexCards}>
               <Text style={styles.title}>
                 {item.title}
               </Text>
