@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
@@ -5,11 +6,11 @@ const cors = require('cors')
 const behaviorsController = require('./controllers/behaviors')
 
 const APP = express()
-const PORT = 3003
-const DBNAME = 'behavior_buddy'
+const PORT = process.env.PORT || 3003
+const MONGODB_URI = process.env.MONGODB_URI ||'mongodb://localhost:27017/' + 'behavior_buddy'
 
 
-mongoose.connect(`mongodb://localhost:27017/${DBNAME}`, { useNewUrlParser: true });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('connected to mongoose...')
 });
