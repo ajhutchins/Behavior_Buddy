@@ -15,17 +15,17 @@ mongoose.connection.once('open', () => {
     console.log('connected to mongoose...')
 });
 
-const whitelist = ['http://localhost:3000', 'http://localhost:3003']
-// const corsOptions = {
-//     origin: function (origin, callback) {
-//         console.log(origin)
-//         if (whitelist.indexOf(origin) !== -1) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     }
-// }
+const whitelist = ['http://localhost:3000', 'https://secure-hollows-11303.herokuapp.com']
+const corsOptions = {
+    origin: function (origin, callback) {
+        console.log(origin)
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
 
 APP.use(cors())
 
