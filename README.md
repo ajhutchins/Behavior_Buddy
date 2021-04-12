@@ -6,7 +6,7 @@
 - [Links](#Links)
 - [Future Work](#Future-Work)
 - [Install](#Install)
-- [Built With](#Built-With])
+- [Built With](#Built-With)
 - [Code Organization](#Code-Organization)
 - [Design Pattern Used](#Design-Pattern-Used)
 - [References](#Tests)
