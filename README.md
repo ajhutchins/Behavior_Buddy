@@ -16,22 +16,15 @@
  
 ## Description
 
-This is an application that allows the user to search for albums, add them to a list of ones in their collection, add to their wishlist, and update their quantity and the price they paid. We use a simple crud application that searches the discog API based on the artist and/or album. This search is displayed on the page with buttons that allows you to add to your personal collection and/or your wishlist. 
+This is a React Native application that contains a node.js backend database. The database includes information regarding Applied Behavior Analysis (ABA), the leading science for the study of behavior, which is especially relevant to families and teachers of children with special needs. The intention for this application is to be an easy-to-use way to look up information about behaviors, find ways to work through each situation, and even benefit from a list of helpful resources. The user is able to search the database for keywords, or they can just scroll through the database until they find what they are looking for. Ultimately, I want this to be a handheld way for families & teachers to quickly find suggestions on how to deal with a variety of situations. 
 
-## Links
+## Link
 
-- You can access the WAQ_Vinyl Heroku Application here: https://whispering-everglades-63027.herokuapp.com/
-- You can access the Discogs API here: https://www.discogs.com/developers
-- You can access our backend API here: https://github.com/ajhutchins/WAQ_Vinyl
-- You can access our backend Heroku directory here: https://dashboard.heroku.com/apps/murmuring-mountain-39567
+- You can access our frontend React Native application here: https://github.com/ajhutchins/WAQ_Vinyl
 
 ## Future Work
 
-This project needs a user authentication aspect to really make it function how intended. If users are able to sign up and log in, they will be able to manage their own personal collections and wishlists. Without this, there is only one master user.
-The project needs a tighter funneling from our chosen API. Discog’s API is very powerful and holds a lot of information, but also includes some empty albums and interesting formatting that we would need more time with to correctly funnel only complete datasets. Until then, we have a few search results that come back wonky.
-
-The project would benefit from being able to see other user data and seeing what others have in their collections and their wishlists. This would make the app a lot more enjoyable and less like a handful of lists.
-Our original plan was to dynamically add data from an outside API for artists and albums to a handful of lists. We met our original goal. Along the way, we found out the difficulty of adding user authentication, but are still motivated to make it work. Inter-user connectivity would be a super beneficial feature if we continued to work on this.
+This project would really benefit from having a more thoroughly completed database for the user to benefit from. Along those lines, it would really benefit from a user authentication for qualified ABA professionals to be able to add to the database so there's a wider net of what people are able to search for. A few additional features that would really elevate the application also include a google map api that shows local professionals that could help with certain situations, a list feature for individuals to keep their personal 'favorites' or behaviors they frequent. This application could actually be useful to the ABA community, so it is the intention to genuinely reach these additional goals.
 
 ## Install
 
