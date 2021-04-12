@@ -1,4 +1,6 @@
-# Behavior_Buddies
+# Behavior_Buddy_Front_End
+
+![alt text](./Behavior_Buddy.png)
 
 ## Table of Contents
 
@@ -20,7 +22,7 @@ This is a React Native application that contains a node.js backend database. The
 
 ## Link
 
-- You can access our frontend React Native application here: https://github.com/ajhutchins/Behavior_Buddy_Front_End
+- [You can access our frontend React Native application here](https://github.com/ajhutchins/Behavior_Buddy_Front_End)
 
 ## Future Work
 
@@ -61,6 +63,7 @@ The project tries to follow the coding style guide provided by AirBnb.
 
 1. Publication Manual of the American Psychological Association, 6th Edition. ISBN: 10:1-4338-0561-8.
 2. Cooper, J. O., Heron, T. E., & Heward, W. L. (2019). Applied Behavior Analysis (3rd Edition). Hoboken, NJ: Pearson Education.
+3. https://reactnative.dev/docs/getting-started
 
 ## Design Documentation
 
